@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    kotlin("jvm") version "1.9.20-RC"
+    kotlin("jvm") version "1.9.0"
 }
 
 group = "com.azuyamat"
@@ -10,15 +10,17 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation(kotlin("stdlib-jdk8"))
+subprojects {
+    apply(plugin = "kotlin")
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        if (project.name != "common") implementation(project(":common"))
+        testImplementation ("io.github.cdimascio:dotenv-java:3.0.0")
+    }
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(17)
 }
