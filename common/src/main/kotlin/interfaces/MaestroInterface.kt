@@ -106,10 +106,17 @@ interface MaestroInterface {
      * @property event The event to play the vinyl on
      * @property guildId The guildId to play the vinyl on (optional)
      */
-    fun playVinyl(id: String, event: Any, guildId: String? = null) {
-        val vinyl = commands.find { it.rootName.equals(id, true) } ?: return echo("Command $id rendered failure.")
-        //TODO ("Play command depending on event sub, groups, options")
+    suspend fun playVinyl(id: String, event: Any, guildId: String? = null) {
+        val vinyl = commands.find { it.rootName.equals(id, true) || it.aliases.contains(id) } ?: return echo("Command $id rendered failure.")
+        val instance = vinyl.instance
+
+        implementVinyl(event, instance)
     }
+
+    /**
+     *
+     */
+    suspend fun implementVinyl(event: Any, instance: RecordPlayerInterface)
 
     /**
      * Adds a package to the maestro
@@ -130,5 +137,5 @@ interface MaestroInterface {
         this.packages += packages
     }
 
-    fun confirmCommandAddition(name: String) = echo("$name has been successfully registered to Discord's API.")
+    fun confirmCommandAddition(name: String, isGuild: Boolean = false) = echo("$name has been successfully registered to Discord's API. ${if (isGuild) "(GUILD command)" else "(GLOBAL command)"}")
 }
