@@ -8,6 +8,30 @@ import org.reflections.Reflections
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
+private val COLORS = mutableMapOf(
+    "&0" to "\u001B[30m", // Black
+    "&1" to "\u001B[34m", // Dark Blue
+    "&2" to "\u001B[32m", // Dark Green
+    "&3" to "\u001B[36m", // Dark Aqua
+    "&4" to "\u001B[31m", // Dark Red
+    "&5" to "\u001B[35m", // Dark Purple
+    "&6" to "\u001B[33m", // Gold
+    "&7" to "\u001B[37m", // Gray
+    "&8" to "\u001B[90m", // Dark Gray
+    "&9" to "\u001B[94m", // Blue
+    "&a" to "\u001B[92m", // Green
+    "&b" to "\u001B[96m", // Aqua
+    "&c" to "\u001B[91m", // Red
+    "&d" to "\u001B[95m", // Light Purple
+    "&e" to "\u001B[93m", // Yellow
+    "&f" to "\u001B[97m"  // White
+)
+
+
+/**
+ * Interface for a Maestro (a command handler)
+ * @author Azuyamat
+ */
 interface MaestroInterface {
     val maestroType: String
 
@@ -22,10 +46,10 @@ interface MaestroInterface {
      * Initializes the Maestro
      */
     suspend fun init(){
-        echo("Maestro $maestroType is ready to conduct")
+        echo("Maestro &b$maestroType&r is ready to conduct")
         registerPackages()
         implementCommands()
-        echo("Registered ${commands.size} commands")
+        echo("Registered &b${commands.size}&r commands")
     }
 
     /**
@@ -33,10 +57,10 @@ interface MaestroInterface {
      */
     private fun registerPackages(){
         if (packages.isEmpty()) {
-            echo("Couldn't find any packages to register. If this is unintentional please use addPackage(...) or addPackages(...) to register one or more packages.")
+            echo("&cCouldn't find any packages to register. If this is unintentional please use addPackage(...) or addPackages(...) to register one or more packages.")
             return
         }
-        else echo("Registering ${packages.size} packages...", SoundLevel.MEDIUM)
+        else echo("Registering &b${packages.size}&r packages...", SoundLevel.MEDIUM)
         packages.forEach(::composePackage)
     }
 
@@ -49,7 +73,7 @@ interface MaestroInterface {
         val prefix = pkg.name
         val guildId = pkg.guildId
         val reflections: MutableSet<Class<*>> = Reflections(prefix).getTypesAnnotatedWith(Command::class.java).toMutableSet()
-        echo("Composing commands from package $prefix with ${reflections.size} commands", SoundLevel.MEDIUM)
+        echo("Composing commands from package &b$prefix&r with &b${reflections.size}&r commands", SoundLevel.MEDIUM)
 
         reflections.map { it.kotlin }.forEach{ recordCommand(it, guildId) }
     }
@@ -71,7 +95,7 @@ interface MaestroInterface {
             guildId
         )
         commands += vinyl
-        echo("Registered command ${instance.simpleName}", SoundLevel.MEDIUM)
+        echo("Registered command &b${instance.simpleName}", SoundLevel.MEDIUM)
         implementCommand(instance)
     }
 
@@ -96,7 +120,10 @@ interface MaestroInterface {
      * @property soundLevel The sound level of the message
      */
     fun echo(message: String, soundLevel: SoundLevel = SoundLevel.HIGH) {
-        if (soundLevel.level <= maxSoundLevel.level) println("[MAESTRO-$maestroType] $message")
+        val output = message
+            .replace("&[0-9a-fA-F]".toRegex()) { COLORS[it.value] ?: "" }
+            .replace("&r".toRegex(), "\u001B[0m")
+        if (soundLevel.level <= maxSoundLevel.level) println("${COLORS["&3"]}[MAESTRO-$maestroType]\u001B[0m $output\u001B[0m")
     }
 
     /**
@@ -137,5 +164,10 @@ interface MaestroInterface {
         this.packages += packages
     }
 
-    fun confirmCommandAddition(name: String, isGuild: Boolean = false) = echo("$name has been successfully registered to Discord's API. ${if (isGuild) "(GUILD command)" else "(GLOBAL command)"}")
+    /**
+     * Confirms the addition of a command to discord API
+     * @param name The name of the command to be added
+     * @param isGuild Whether the command is a guild command or not
+     */
+    fun confirmCommandAddition(name: String, isGuild: Boolean = false) = echo("&b$name&r has been successfully registered to Discord's API. ${if (isGuild) "(&bGUILD&r command)" else "(&bGLOBAL&r command)"}")
 }

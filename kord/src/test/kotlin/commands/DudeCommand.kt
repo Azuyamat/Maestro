@@ -14,9 +14,9 @@ import interfaces.RecordPlayer
 object DudeCommand : RecordPlayer {
     override val permission: Permission = Permission.Administrator
 
-    suspend fun main(event: GuildChatInputCommandInteractionCreateEvent, arg1: String, user: User){
+    suspend fun main(event: GuildChatInputCommandInteractionCreateEvent, arg1: String, user: String){
         event.interaction.respondEphemeral {
-            content = "Dude! --> ${user.username}"
+            content = "Dude! --> $user"
         }
     }
 }

@@ -1,5 +1,9 @@
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
+import dev.kord.core.entity.Attachment
+import dev.kord.core.entity.Role
+import dev.kord.core.entity.User
+import dev.kord.core.entity.channel.Channel
 import dev.kord.core.entity.interaction.GroupCommand
 import dev.kord.core.entity.interaction.RootCommand
 import dev.kord.core.entity.interaction.SubCommand
@@ -18,7 +22,9 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.callSuspend
+import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.declaredMemberFunctions
+import kotlin.reflect.jvm.isAccessible
 
 class Maestro(private val bot: Kord) : MaestroInterface {
     override val maestroType: String = "kord"
@@ -76,32 +82,50 @@ class Maestro(private val bot: Kord) : MaestroInterface {
             is GroupCommand -> null
         }
 
+        val caller: Any;
         val function: KFunction<*> = if (groupName != null && subCommandName != null) {
             val group = instance::class.nestedClasses.find { it.simpleName?.startsWith(groupName)?:false }?: return
+            caller = group.createInstance()
             group.declaredMemberFunctions.find { it.name.startsWith(subCommandName) }?: return
         } else if (groupName != null) {
             val group = instance::class.nestedClasses.find { it.simpleName?.startsWith(groupName)?:false }?: return
+            caller = group.createInstance()
             group.declaredMemberFunctions.firstOrNull()?:return
         } else if (subCommandName != null) {
+            caller = instance;
             instance.otherFunctions?.firstOrNull(){ it.name.startsWith(subCommandName) }?:return
         } else {
+            caller = instance;
             instance.mainFunction?:return
         }
 
-        val options = interaction.command.options.map {
-            var value = it.value.value
-            if (value is Snowflake) value = bot.getUser(value)
-            value
-        }
-
         try {
+            var i = 2
+            val options = interaction.command.options.map {
+                val type = function.parameters[i].type.classifier as KClass<*>
+                val castedValue = when (type) {
+                    String::class -> c.strings[it.key]
+                    Int::class -> c.integers[it.key]
+                    Double::class -> c.numbers[it.key]
+                    Boolean::class -> c.booleans[it.key]
+                    Snowflake::class -> c.mentionables[it.key]
+                    Role::class -> c.roles[it.key]
+                    Channel::class -> c.channels[it.key].let { c -> c?.asChannel() }
+                    User::class -> c.users[it.key]
+                    Attachment::class -> c.attachments[it.key]
+                    else -> it.value.value
+                }
+                i++
+                castedValue
+            }
             if (function.isSuspend)
-                function.callSuspend(instance, event, *options.toTypedArray())
+                function.callSuspend(caller, event, *options.toTypedArray())
             else
-                function.call(instance, event, *options.toTypedArray())
+                function.call(caller, event, *options.toTypedArray())
         } catch (e: Exception) {
-            println("<------------------> COMMAND ERROR <------------------>")
-            println(options)
+            echo(
+                "<------------------> &cCOMMAND ERROR <------------------>"
+            )
             e.printStackTrace()
         }
     }

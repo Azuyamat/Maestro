@@ -112,7 +112,7 @@ interface RecordPlayer : RecordPlayerInterface {
             User::class -> builder.user(paramName, description) { required = !param.isOptional }
             GuildChatInputCommandInteractionCreateEvent::class -> return
             else -> {
-                println("Couldn't add option option $paramName because the variable type isn't recognized")
+                throw Exception("Couldn't add option option $paramName because the variable type isn't recognized")
             }
         }
     }
