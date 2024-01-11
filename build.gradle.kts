@@ -18,6 +18,7 @@ subprojects {
     dependencies {
         if (project.name != "common") implementation(project(":common"))
         testImplementation ("io.github.cdimascio:dotenv-java:3.0.0")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
     }
 }
 

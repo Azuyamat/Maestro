@@ -4,3 +4,4 @@ plugins {
 rootProject.name = "Maestro"
 include("kord")
 include("common")
+include("bukkit")
