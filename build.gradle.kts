@@ -12,6 +12,8 @@ repositories {
     mavenCentral()
 }
 
+// test
+
 subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "maven-publish")
