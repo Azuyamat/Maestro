@@ -1,0 +1,10 @@
+name: maestro
+version: '${version}'
+main: Main
+api-version: '1.20'
+authors: [Azuyamat]
+description: Core plugin for Maestro
+prefix: MAESTRO
+load: STARTUP
+libraries:
+  - org.reflections:reflections:0.9.12
