@@ -95,7 +95,7 @@ class ExecutorBuilder(
 
         // Make sure all required parameters are present
         if (parsedArgs.filterNotNull().size < requiredParams.size) {
-            sender.sendMessage("<gray>Invalid usage: <gray>/".parse().append(usage))
+            sender.sendMessage("<gray>Invalid usage: <gray>/${command.name} ".parse().append(usage))
             return@CommandExecutor true
         }
 
