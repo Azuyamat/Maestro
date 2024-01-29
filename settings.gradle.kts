@@ -5,3 +5,4 @@ rootProject.name = "Maestro"
 include("kord")
 include("common")
 include("bukkit")
+include("format")
