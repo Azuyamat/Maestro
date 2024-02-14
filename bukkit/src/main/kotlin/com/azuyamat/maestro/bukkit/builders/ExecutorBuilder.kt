@@ -49,7 +49,7 @@ class ExecutorBuilder(
         // Main `onCommand` function
         if (args.isEmpty() || command.subCommands.isEmpty()) {
             if (mainFunction == null) {
-                sender.sendMessage("<red>Command not implemented. Use subcommands instead:<newline>${command.subCommands.keys.joinToString(", ")}}".parse())
+                sender.sendMessage("<red>Command not implemented. Use subcommands instead: ${command.subCommands.keys.joinToString(", ")}".parse())
                 return@CommandExecutor true
             }
             usage = command.usage
