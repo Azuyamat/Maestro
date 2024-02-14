@@ -27,6 +27,7 @@ class CommandBuilder(
     private val annotation = clazz.findAnnotation<Command>()!! // !! is safe because we check for it in CommandRegistry before calling this
 
     private val functions = clazz.functions
+    // This can now be null
     private val mainFunction = functions.find { it.name == "onCommand" }
     private val subFunctions = functions.filter { it.name != "onCommand" }
 
