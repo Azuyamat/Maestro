@@ -29,6 +29,7 @@ class CommandBuilder(
     private val functions = clazz.functions
     // This can now be null because it can't always exist
     private val mainFunction = functions.find { it.name == "onCommand" }
+    // Other functions
     private val subFunctions = functions.filter { it.name != "onCommand" }
 
     private val subCommands = subFunctions.mapNotNull {
