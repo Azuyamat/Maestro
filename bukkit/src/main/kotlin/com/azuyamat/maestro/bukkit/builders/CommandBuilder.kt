@@ -27,9 +27,7 @@ class CommandBuilder(
     private val annotation = clazz.findAnnotation<Command>()!! // !! is safe because we check for it in CommandRegistry before calling this
 
     private val functions = clazz.functions
-    private val mainFunction = functions.find { it.name == "onCommand" } ?: run {
-        throw Exception("No main command function found in ${clazz.simpleName}")
-    }
+    private val mainFunction = functions.find { it.name == "onCommand" }
     private val subFunctions = functions.filter { it.name != "onCommand" }
 
     private val subCommands = subFunctions.mapNotNull {
@@ -58,7 +56,7 @@ class CommandBuilder(
         aliases = annotation.aliases,
         permission = annotation.permission,
         permissionMessage = annotation.permissionMessage,
-        senderType = getSenderType(mainFunction.valueParameters.first()),
+        senderType = getSenderType(mainFunction?.valueParameters?.first()),
         cooldown = annotation.cooldown,
         subCommands = subCommands,
         usage = buildUsage(mainFunction)
@@ -80,13 +78,14 @@ class CommandBuilder(
     ).build()
 
     companion object {
-        fun getSenderType(parameter: KParameter) = when(parameter.type.classifier) {
+        fun getSenderType(parameter: KParameter?) = when(parameter?.type?.classifier) {
             Player::class -> SenderType.PLAYER
             ConsoleCommandSender::class -> SenderType.CONSOLE
             else -> SenderType.BOTH
         }
 
-        fun buildUsage(function: KFunction<*>, parent: String = ""): Component {
+        fun buildUsage(function: KFunction<*>?, parent: String = ""): Component {
+            if (function == null) return Component.empty()
             val parameters = function.valueParameters.slice(1 until function.valueParameters.size)
             var usage = parent
             val parsedParameters: MutableList<String> = mutableListOf()

@@ -15,7 +15,7 @@ import kotlin.reflect.full.valueParameters
 class TabCompleteBuilder(
     private val instance: JavaPlugin,
     private val command: CommandData,
-    private val mainFunction: KFunction<*>,
+    private val mainFunction: KFunction<*>?,
     private val subFunctions: List<KFunction<*>>
 ) {
 
@@ -34,6 +34,7 @@ class TabCompleteBuilder(
                 complete(parameters, args.size)
             } else {
                 // Main function tab complete (main command args)
+                if (mainFunction == null) return@TabCompleter subCommands.map { it.key }
                 val parameters = mainFunction.valueParameters.slice(1 until mainFunction.valueParameters.size)
 
                 complete(parameters, args.size)

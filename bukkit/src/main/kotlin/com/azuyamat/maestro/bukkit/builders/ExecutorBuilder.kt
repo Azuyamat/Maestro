@@ -20,7 +20,7 @@ class ExecutorBuilder(
     private val instance: JavaPlugin,
     private val command: CommandData,
     private val cooldownManager: CooldownManager,
-    private val mainFunction: KFunction<*>,
+    private val mainFunction: KFunction<*>?,
     private val subFunctions: List<KFunction<*>>
 ) {
 
@@ -48,6 +48,10 @@ class ExecutorBuilder(
 
         // Main `onCommand` function
         if (args.isEmpty() || command.subCommands.isEmpty()) {
+            if (mainFunction == null) {
+                sender.sendMessage("<red>Command not implemented. Use subcommands instead:<newline>${command.subCommands.keys.joinToString(", ")}}".parse())
+                return@CommandExecutor true
+            }
             usage = command.usage
 
             parsedArgs = parseCommandArgs(mainFunction, args)
