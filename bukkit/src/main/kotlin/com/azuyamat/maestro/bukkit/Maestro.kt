@@ -1,9 +1,9 @@
 package com.azuyamat.maestro.bukkit
 
-import com.azuyamat.maestro.common.annotations.Command
 import com.azuyamat.maestro.bukkit.builders.CommandBuilder
-import com.azuyamat.maestro.common.data.command.CommandData
 import com.azuyamat.maestro.common.Maestro
+import com.azuyamat.maestro.common.annotations.Command
+import com.azuyamat.maestro.common.data.command.CommandData
 import com.azuyamat.maestro.common.enums.SenderType
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender

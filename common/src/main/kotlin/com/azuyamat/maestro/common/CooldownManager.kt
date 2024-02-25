@@ -1,6 +1,6 @@
 package com.azuyamat.maestro.common
 
-import java.util.UUID
+import java.util.*
 
 
 class CooldownManager {

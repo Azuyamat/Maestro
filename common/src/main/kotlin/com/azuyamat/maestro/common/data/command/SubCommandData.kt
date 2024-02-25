@@ -1,6 +1,5 @@
 package com.azuyamat.maestro.common.data.command
 
-import com.azuyamat.maestro.common.data.command.DEFAULT_PERMISSION_MESSAGE
 import com.azuyamat.maestro.common.enums.SenderType
 import net.kyori.adventure.text.Component
 

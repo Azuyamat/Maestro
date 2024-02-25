@@ -1,5 +1,4 @@
 import com.azuyamat.maestro.format.StringHelper
-import com.azuyamat.maestro.format.StringHelper.Companion.parse
 import net.kyori.adventure.text.format.TextColor
 
 fun main() {
