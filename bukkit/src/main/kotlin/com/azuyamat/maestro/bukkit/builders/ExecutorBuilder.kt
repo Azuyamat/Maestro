@@ -1,10 +1,11 @@
 package com.azuyamat.maestro.bukkit.builders
 
-import com.azuyamat.maestro.bukkit.CooldownManager
-import com.azuyamat.maestro.bukkit.annotations.Catcher
-import com.azuyamat.maestro.bukkit.data.CommandData
-import com.azuyamat.maestro.bukkit.enums.SenderType
-import com.azuyamat.maestro.bukkit.parse
+import com.azuyamat.maestro.bukkit.BukkitMaestro.Companion.asSenderType
+import com.azuyamat.maestro.common.CooldownManager
+import com.azuyamat.maestro.common.annotations.Catcher
+import com.azuyamat.maestro.common.data.command.CommandData
+import com.azuyamat.maestro.common.enums.SenderType
+import com.azuyamat.maestro.common.parse
 import net.kyori.adventure.text.Component
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandExecutor
@@ -26,7 +27,7 @@ class ExecutorBuilder(
 
     fun build() = CommandExecutor { sender, _, _, args ->
 
-        val senderType = SenderType.fromSender(sender)
+        val senderType = sender.asSenderType()
 
         // Make sure player has permission to run the main command scope
         if (!checkForPermission(sender, command.permission)) {
@@ -105,8 +106,8 @@ class ExecutorBuilder(
 
         // Make sure the player is not on cooldown
         if (sender is Player && cooldown > 0) {
-            if (cooldownManager.isOnCooldown(sender, cooldownId)) {
-                val timeLeft = cooldownManager.timeLeft(sender, cooldownId)
+            if (cooldownManager.isOnCooldown(sender.uniqueId, cooldownId)) {
+                val timeLeft = cooldownManager.timeLeft(sender.uniqueId, cooldownId)
                 sender.sendMessage("<gray>You are on cooldown for <main>$timeLeft <gray>ms".parse())
                 return@CommandExecutor true
             }
@@ -117,7 +118,7 @@ class ExecutorBuilder(
 
         // Set cooldown
         if (sender is Player && cooldown > 0) {
-            cooldownManager.setCooldown(sender, cooldownId, cooldown)
+            cooldownManager.setCooldown(sender.uniqueId, cooldownId, cooldown)
         }
 
         true

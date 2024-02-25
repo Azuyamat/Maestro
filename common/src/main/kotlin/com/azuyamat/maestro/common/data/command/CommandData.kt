@@ -1,6 +1,6 @@
-package com.azuyamat.maestro.bukkit.data
+package com.azuyamat.maestro.common.data.command
 
-import com.azuyamat.maestro.bukkit.enums.SenderType
+import com.azuyamat.maestro.common.enums.SenderType
 import net.kyori.adventure.text.Component
 import kotlin.reflect.KClass
 

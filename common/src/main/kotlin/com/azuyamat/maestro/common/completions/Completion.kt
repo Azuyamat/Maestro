@@ -1,4 +1,4 @@
-package com.azuyamat.maestro.bukkit.completions
+package com.azuyamat.maestro.common.completions
 
 interface Completion {
 

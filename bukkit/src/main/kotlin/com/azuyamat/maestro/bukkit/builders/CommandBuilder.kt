@@ -1,12 +1,12 @@
 package com.azuyamat.maestro.bukkit.builders
 
-import com.azuyamat.maestro.bukkit.CooldownManager
-import com.azuyamat.maestro.bukkit.annotations.Command
-import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import com.azuyamat.maestro.bukkit.data.CommandData
-import com.azuyamat.maestro.bukkit.data.SubCommandData
-import com.azuyamat.maestro.bukkit.enums.SenderType
-import com.azuyamat.maestro.bukkit.parse
+import com.azuyamat.maestro.common.CooldownManager
+import com.azuyamat.maestro.common.annotations.Command
+import com.azuyamat.maestro.common.annotations.SubCommand
+import com.azuyamat.maestro.common.data.command.CommandData
+import com.azuyamat.maestro.common.data.command.SubCommandData
+import com.azuyamat.maestro.common.enums.SenderType
+import com.azuyamat.maestro.common.parse
 import net.kyori.adventure.text.Component
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player

@@ -1,8 +1,8 @@
 package com.azuyamat.maestro.bukkit.builders
 
-import com.azuyamat.maestro.bukkit.annotations.Tab
-import com.azuyamat.maestro.bukkit.completions.CompletionsRegistry.getCompletion
-import com.azuyamat.maestro.bukkit.data.CommandData
+import com.azuyamat.maestro.common.annotations.Tab
+import com.azuyamat.maestro.common.completions.CompletionsRegistry.getCompletion
+import com.azuyamat.maestro.common.data.command.CommandData
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
