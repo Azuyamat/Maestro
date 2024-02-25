@@ -1,4 +1,4 @@
-package com.azuyamat.maestro.bukkit.completions
+package com.azuyamat.maestro.common.completions
 
 import org.reflections.Reflections
 
@@ -14,7 +14,7 @@ object CompletionsRegistry {
             for (completion in completions) {
                 val instance = completion.constructors.first().newInstance() as Completion
                 val name = completion.simpleName.lowercase().replace("completion", "")
-                this.completions[name] = instance
+                CompletionsRegistry.completions[name] = instance
                 println("Registered completion ${completion.simpleName}: $name")
             }
         }

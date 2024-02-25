@@ -1,4 +1,4 @@
-package com.azuyamat.maestro.bukkit
+package com.azuyamat.maestro.common
 
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -8,7 +8,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 private val mm = MiniMessage.miniMessage()
 
-internal fun String.parse() = mm.deserialize(this, mainColorResolver())
+fun String.parse() = mm.deserialize(this, mainColorResolver())
 
 private fun mainColorResolver(): TagResolver {
     return TagResolver.resolver(

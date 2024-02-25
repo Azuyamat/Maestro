@@ -1,10 +1,15 @@
 package com.azuyamat.maestro.bukkit
 
-import com.azuyamat.maestro.bukkit.annotations.Command
+import com.azuyamat.maestro.common.annotations.Command
 import com.azuyamat.maestro.bukkit.builders.CommandBuilder
-import com.azuyamat.maestro.bukkit.data.CommandData
+import com.azuyamat.maestro.common.data.command.CommandData
+import com.azuyamat.maestro.common.Maestro
+import com.azuyamat.maestro.common.enums.SenderType
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
+import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.command.PluginCommand
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -14,9 +19,9 @@ import org.reflections.util.ConfigurationBuilder
 import kotlin.reflect.KClass
 import kotlin.time.measureTime
 
-class Maestro(
+class BukkitMaestro(
     private val instance: JavaPlugin
-) {
+): Maestro {
     private val logger = instance.logger
     private val commandMap = Bukkit.getCommandMap()
     private val builderConstructor = PluginCommand::class.java.declaredConstructors.first()
@@ -26,7 +31,7 @@ class Maestro(
         builderConstructor.isAccessible = true
     }
 
-    fun registerCommands(vararg packages: String) {
+    override fun registerCommands(vararg packages: String) {
 
         for (packageName in packages) {
             val pkg = Reflections(
@@ -36,15 +41,14 @@ class Maestro(
             val commands = pkg.getTypesAnnotatedWith(Command::class.java)
             val time = measureTime {
                 for (command in commands) {
-                    val builder = registerCommand(command.kotlin)
-                    commandMap.register(builder.label, builder)
+                    registerCommand(command.kotlin)
                 }
             }
             logger.info("Registered commands from package $packageName in $time")
         }
     }
 
-    private fun registerCommand(clazz: KClass<*>): PluginCommand {
+    override fun registerCommand(clazz: KClass<*>) {
 
         logger.info("Registering command ${clazz.simpleName}")
 
@@ -61,7 +65,16 @@ class Maestro(
         }
 
         commands.add(info)
+        commandMap.register(builder.label, builder)
+    }
 
-        return builder
+    companion object {
+        fun CommandSender.asSenderType(): SenderType {
+            return when (this) {
+                is Player -> SenderType.PLAYER
+                is ConsoleCommandSender -> SenderType.CONSOLE
+                else -> SenderType.BOTH
+            }
+        }
     }
 }
