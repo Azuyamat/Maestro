@@ -28,3 +28,7 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
+
+tasks.withType<ShadowJar> {
+    archiveClassifier.set("")
+}
