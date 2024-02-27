@@ -6,7 +6,7 @@ plugins {
 
 val publicationVersion = "1.0"
 group = "com.azuyamat"
-version = "1.0"
+version = "3.2"
 
 repositories {
     mavenCentral()
