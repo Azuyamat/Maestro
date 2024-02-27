@@ -11,7 +11,6 @@ class VelocityCommand(
     private val proxyServer: ProxyServer,
     private val data: CommandData
 ): SimpleCommand {
-    private val permission: Optional<String> = Optional.empty()
     private var executor = CommandExecutor(proxyServer, data)
 
     override fun execute(invocation: SimpleCommand.Invocation) {
@@ -19,7 +18,7 @@ class VelocityCommand(
     }
 
     override fun hasPermission(invocation: SimpleCommand.Invocation): Boolean {
-        return permission.isPresent && invocation.source().hasPermission(permission.get())
+        return data.permission.isNotEmpty() && invocation.source().hasPermission(data.permission)
     }
 
     fun buildMeta(): CommandMeta = proxyServer.commandManager.metaBuilder(data.name)
