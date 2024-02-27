@@ -19,7 +19,7 @@ import kotlin.reflect.full.functions
 import kotlin.reflect.full.valueParameters
 
 class CommandBuilder(
-    private val instance: JavaPlugin,
+    instance: JavaPlugin,
     clazz: KClass<*>
 ) {
 
