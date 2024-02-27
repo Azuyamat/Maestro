@@ -18,7 +18,9 @@ class VelocityCommand(
     }
 
     override fun hasPermission(invocation: SimpleCommand.Invocation): Boolean {
-        return data.permission.isNotEmpty() && invocation.source().hasPermission(data.permission)
+        val permission = data.permission
+        if (permission.isEmpty()) return true
+        return invocation.source().hasPermission(permission)
     }
 
     fun buildMeta(): CommandMeta = proxyServer.commandManager.metaBuilder(data.name)
