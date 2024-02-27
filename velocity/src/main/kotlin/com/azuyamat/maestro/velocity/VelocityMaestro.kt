@@ -28,6 +28,7 @@ class VelocityMaestro(
                     registerCommand(command.kotlin)
                 }
             }
+
             println("Registered commands from package $packageName in $time")
         }
     }
