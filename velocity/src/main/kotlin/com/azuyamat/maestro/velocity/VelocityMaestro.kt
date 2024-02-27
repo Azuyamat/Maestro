@@ -29,6 +29,7 @@ class VelocityMaestro(
                 }
             }
 
+
             println("Registered commands from package $packageName in $time")
         }
     }
