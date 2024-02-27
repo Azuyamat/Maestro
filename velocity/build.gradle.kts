@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "com.azuyamat.maestro"
+group = "com.azuyamat.maestro.velocity"
 version = "1.0"
 
 repositories {
