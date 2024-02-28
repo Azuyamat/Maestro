@@ -141,6 +141,8 @@ class CommandExecutor(
                 break
             }
 
+            println("Type in: ${type.classifier} | Arg: $arg")
+
             parsedArgs[index] = when(type.classifier) {
                 String::class -> arg
                 Int::class -> arg.toIntOrNull()
@@ -150,6 +152,8 @@ class CommandExecutor(
                 Player::class -> proxyServer.getPlayer(arg).getOrNull()
                 else -> null
             }
+
+            println("Type out: ${type.classifier} | Arg: ${parsedArgs[index]}")
         }
 
         return parsedArgs
