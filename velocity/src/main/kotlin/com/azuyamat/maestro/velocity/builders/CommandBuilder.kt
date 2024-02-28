@@ -77,7 +77,7 @@ fun buildUsage(function: KFunction<*>?, parent: String = ""): Component {
         val type = parameter.type.classifier
         val optional = parameter.type.isMarkedNullable
         var parsedParameter = if (optional) "[$name]" else "<$name>"
-        parsedParameter = "<hover:show_text:'<gray>${(type?:String)::class.simpleName}<reset>'><gray>$parsedParameter<reset>"
+        parsedParameter = "<hover:show_text:'<gray>${(type?:String).javaClass.name}<reset>'><gray>$parsedParameter<reset>"
         parsedParameters.add(parsedParameter)
     }
     usage += parsedParameters.joinToString(" ")
