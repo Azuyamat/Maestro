@@ -14,6 +14,7 @@ class VelocityCommand(
     private var executor = CommandExecutor(proxyServer, data)
 
     override fun execute(invocation: SimpleCommand.Invocation) {
+        println("Invoking command ${data.name}")
         executor.execute(invocation)
     }
 

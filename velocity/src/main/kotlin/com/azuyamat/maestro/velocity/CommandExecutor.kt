@@ -26,6 +26,7 @@ class CommandExecutor(
     private val subFunctions = data.clazz.functions.filter { it.hasAnnotation<SubCommand>() && it.name != "onCommand" }
 
     fun execute(invocation: Invocation) {
+        println("(2) Invoking command ${data.name}")
         val sender = invocation.source()
         val senderType = sender.asSenderType()
         val args = invocation.arguments()
