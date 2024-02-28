@@ -70,14 +70,14 @@ fun getSenderType(parameter: KParameter?) = when (parameter?.type?.classifier) {
 fun buildUsage(function: KFunction<*>?, parent: String = ""): Component {
     if (function == null) return Component.empty()
     val parameters = function.valueParameters.slice(1 until function.valueParameters.size)
-    var usage = parent
+    var usage = "$parent "
     val parsedParameters: MutableList<String> = mutableListOf()
     for (parameter in parameters) {
         val name = parameter.name
         val type = parameter.type.classifier
         val optional = parameter.type.isMarkedNullable
         var parsedParameter = if (optional) "[$name]" else "<$name>"
-        parsedParameter = "<hover:show_text:'<gray>${type?:String::class.simpleName}<reset>'><gray>$parsedParameter<reset>"
+        parsedParameter = "<hover:show_text:'<gray>${(type?:String)::class.simpleName}<reset>'><gray>$parsedParameter<reset>"
         parsedParameters.add(parsedParameter)
     }
     usage += parsedParameters.joinToString(" ")

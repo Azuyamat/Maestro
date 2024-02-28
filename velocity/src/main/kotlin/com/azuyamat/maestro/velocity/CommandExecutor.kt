@@ -101,7 +101,6 @@ class CommandExecutor(
         // Make sure all required parameters are present
         val givenArgs = parsedArgs.filterNotNull().size
         val requiredArgs = requiredParams.size
-        println("Given: $givenArgs - Required: $requiredArgs - Params: $params - Parsed: ${parsedArgs.joinToString(", ")}")
         if (givenArgs < requiredArgs) {
             sender.sendMessage("<red>Invalid usage: /".parse().append(usage))
             return
