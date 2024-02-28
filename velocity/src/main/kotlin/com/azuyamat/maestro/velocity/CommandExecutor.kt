@@ -99,7 +99,7 @@ class CommandExecutor(
         val requiredParams = params.filterNot { it.type.isMarkedNullable }
 
         // Make sure all required parameters are present
-        if (parsedArgs.size < requiredParams.size) {
+        if (parsedArgs.filterNotNull().size < requiredParams.size) {
             sender.sendMessage("<red>Invalid usage: /${data.name}".parse().append(usage))
             return
         }
