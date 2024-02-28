@@ -27,7 +27,6 @@ class CommandExecutor(
     private val subFunctions = data.clazz.functions.filter { it.hasAnnotation<SubCommand>() && it.name != "onCommand" }
 
     fun execute(invocation: Invocation) {
-        println("(2) Invoking command ${data.name}")
         val sender = invocation.source()
         val senderType = sender.asSenderType()
         val args = invocation.arguments()
@@ -114,9 +113,7 @@ class CommandExecutor(
             }
         }
 
-        // Execute command
-        println("Executing command: /${data.name} ${parsedArgs.joinToString(" ")} | Cooldown: $cooldownId | CooldownTime: $cooldown | Usage: $usage")
-        println("Sender: $sender | SenderType: $senderType | RequiredSender: $requiredSender")
+        // Invoke the command
         function.call(commandInstance, sender, *parsedArgs)
 
         // Set cooldown
@@ -141,8 +138,6 @@ class CommandExecutor(
                 break
             }
 
-            println("Type in: ${type.classifier} | Arg: $arg")
-
             parsedArgs[index] = when(type.classifier) {
                 String::class -> arg
                 Int::class -> arg.toIntOrNull()
@@ -152,8 +147,6 @@ class CommandExecutor(
                 Player::class -> proxyServer.getPlayer(arg).getOrNull()
                 else -> null
             }
-
-            println("Type out: ${type.classifier} | Arg: ${parsedArgs[index]}")
         }
 
         return parsedArgs
