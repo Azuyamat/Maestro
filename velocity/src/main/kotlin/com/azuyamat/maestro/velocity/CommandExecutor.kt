@@ -113,6 +113,8 @@ class CommandExecutor(
         }
 
         // Execute command
+        println("Executing command: /${data.name} ${parsedArgs.joinToString(" ")} | Cooldown: $cooldownId | CooldownTime: $cooldown | Usage: $usage")
+        println("Sender: $sender | SenderType: $senderType | RequiredSender: $requiredSender")
         function.call(commandInstance, sender, *parsedArgs)
 
         // Set cooldown

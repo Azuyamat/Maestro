@@ -2,6 +2,7 @@ package com.azuyamat.maestro.velocity
 
 import com.azuyamat.maestro.common.Maestro
 import com.azuyamat.maestro.common.annotations.Command
+import com.azuyamat.maestro.common.data.command.CommandData
 import com.azuyamat.maestro.velocity.builders.CommandBuilder
 import com.azuyamat.maestro.velocity.commands.VelocityCommand
 import com.velocitypowered.api.proxy.ProxyServer
@@ -16,6 +17,8 @@ import kotlin.time.measureTime
 class VelocityMaestro(
     private val proxyServer: ProxyServer
 ): Maestro {
+    val commands = mutableListOf<CommandData>()
+
     override fun registerCommands(vararg packages: String) {
         for (packageName in packages) {
             val pkg = Reflections(
@@ -45,5 +48,7 @@ class VelocityMaestro(
         proxyServer.commandManager.register(meta, velocityCommand)
 
         println("Registered command: ${data.name}")
+
+        commands.add(data)
     }
 }
