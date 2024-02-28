@@ -30,7 +30,7 @@ class CommandBuilder(
     fun aliases() = commandAnnotation?.aliases ?: arrayOf()
     fun permission() = commandAnnotation?.permission
     fun permissionMessage() = commandAnnotation?.permissionMessage
-    fun senderType() = mainFunction?.parameters?.firstOrNull()?.let { getSenderType(it) } ?: SenderType.BOTH
+    fun senderType() = mainFunction?.valueParameters?.firstOrNull()?.let { getSenderType(it) } ?: SenderType.BOTH
     fun cooldown() = commandAnnotation?.cooldown ?: 0
     fun usage() = buildUsage(mainFunction, name())
     fun subCommands() = subCommands.map {

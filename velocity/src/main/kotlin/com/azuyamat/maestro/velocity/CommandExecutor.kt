@@ -11,6 +11,7 @@ import com.velocitypowered.api.command.SimpleCommand.Invocation
 import com.velocitypowered.api.proxy.ConsoleCommandSource
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.ProxyServer
+import kotlin.jvm.optionals.getOrNull
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.functions
@@ -146,7 +147,7 @@ class CommandExecutor(
                 Double::class -> arg.toDoubleOrNull()
                 Float::class -> arg.toFloatOrNull()
                 Boolean::class -> arg.toBoolean()
-                Player::class -> proxyServer.getPlayer(arg)
+                Player::class -> proxyServer.getPlayer(arg).getOrNull()
                 else -> null
             }
         }
