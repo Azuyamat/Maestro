@@ -2,6 +2,7 @@ plugins {
     id("java")
     `maven-publish`
     kotlin("jvm") version "1.9.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 val publicationVersion = "1.0"
@@ -23,7 +24,20 @@ subprojects {
     dependencies {
         if (project.name != "common") implementation(project(":common"))
         testImplementation ("io.github.cdimascio:dotenv-java:3.0.0")
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        api("org.jetbrains.kotlin:kotlin-reflect")
+    }
+
+    if (project.name != "common") {
+        apply(plugin = "com.github.johnrengelman.shadow")
+
+        tasks {
+            build {
+                dependsOn("shadowJar")
+            }
+            shadowJar {
+                archiveClassifier.set("")
+            }
+        }
     }
 
     publishing {
